@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Iframe postmsg</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="./main.css" /> -->
+
+    </head>
+</head>
+
+<body>
+    <section class="container">
+        <div class="row">
+            <div class="col-12" style="padding:0;">
+                <form>
+                    <div class="form-group">
+                        <input placeholder="Speak friend!" name="msg_sender" id="msg-sender" class="form-control" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary">Enviar msg</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-12" style="padding:0;" id="msgs">
+            </div>
+        </div>
+    </section>
+</body>
+
+<script>
+    // window.addEventListener("message", receiveMessage, false);
+
+    // function receiveMessage(event) {
+    //     var p = document.createElement('p');
+    //     p.innerHTML = event.data;
+    //     document.getElementById('msgs').appendChild(p);
+    // }
+
+    document.querySelector('button.btn').addEventListener("click", function(e) {
+        e.preventDefault();
+        var msg = document.getElementById("msg-sender").value;
+        window.parent.postMessage(msg, "*");
+        document.getElementById("msg-sender").value = null;
+    });
+</script>
+
+</html>

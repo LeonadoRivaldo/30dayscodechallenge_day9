@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Iframe postmsg</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
+        <!-- <link rel="stylesheet" href="./main.css" /> -->
+
+    </head>
+</head>
+
+<body>
+    <section class="container" style="margin-top:20px;">
+        <div class="row">
+            <div class="col-4">
+                <form>
+                    <div class="form-group">
+                        <input placeholder="Speak friend!" name="msg_sender" id="msg-sender" class="form-control" />
+                    </div>
+                    <div class="d-flex justify-content-end">
+                        <button class="btn btn-primary">Enviar msg</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-4" id="msgs">
+
+            </div>
+            <div class="col-4">
+                <div class="embed-responsive" style="height:500px;">
+                    <iframe class="embed-responsive-item" src="./iframe.html" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    document.querySelector('button.btn').addEventListener("click", function(e) {
+        e.preventDefault();
+        var msg = document.getElementById("msg-sender").value;
+        var iframe = document.getElementsByTagName("iframe")[0].contentWindow;
+        iframe.postMessage(msg, "*");
+        createMsg(msg, 'alert-primary', false);
+        document.getElementById("msg-sender").value = null;
+    });
+
+    window.addEventListener("message", receiveMessage, false);
+    var referenceNode = null;
+
+    function createMsg(msg, classe, visitante) {
+        var p = document.createElement('p');
+        var small = document.createElement('small');
+        p.classList.add('alert');
+        p.classList.add(classe);
+        p.innerHTML = msg + "<hr/>";
+
+        small.classList.add("d-flex");
+        small.classList.add("justify-content-end");
+        small.innerHTML = visitante ? 'Visitante' : 'Atendente';
+        small.innerHTML += ' @' + new Date().getHours() + ":" + new Date().getMinutes() + ':' + new Date().getSeconds();
+
+        p.appendChild(small);
+
+        document.getElementById('msgs').insertBefore(p, referenceNode);
+        referenceNode = p;
+    }
+
+    function receiveMessage(event) {
+        createMsg(event.data, 'alert-secondary', true);
+    }
+</script>
+
+
+</html>
